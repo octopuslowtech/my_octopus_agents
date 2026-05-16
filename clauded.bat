@@ -1,2 +1,2 @@
 @echo off
-start cmd /k "claude --dangerously-skip-permissions"
+claude --dangerously-skip-permissions

@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Stop"
 
 $scriptDir = $PSScriptRoot
-$source = Join-Path $scriptDir "AGENTS.md"
+$source = Join-Path $scriptDir "AGENTS_template.md"
 $userHome = $env:USERPROFILE
 $claudeDir = Join-Path $userHome ".claude"
 $codexDir = Join-Path $userHome ".codex"
@@ -29,7 +29,7 @@ if (-not (Test-Path $source)) {
     exit 1
 }
 
-Write-Host "=== Sync AGENTS.md ===" -ForegroundColor Cyan
+Write-Host "=== Sync AGENTS_template.md ===" -ForegroundColor Cyan
 Write-Host "Source: $source"
 
 foreach ($target in $targets) {
@@ -50,11 +50,7 @@ foreach ($file in $envFiles) {
         Write-Host "Skip (source missing): $src" -ForegroundColor Yellow
         continue
     }
-    if (Test-Path $dest) {
-        Write-Host "Exists, skip: $dest" -ForegroundColor DarkGray
-    } else {
-        Sync-File $src $dest
-    }
+    Sync-File $src $dest
 }
 
 Write-Host ""
@@ -68,11 +64,7 @@ if (-not (Test-Path $statuslineSrc)) {
 } else {
     Ensure-Directory $claudeDir
 
-    if (-not (Test-Path $statuslineDest)) {
-        Sync-File $statuslineSrc $statuslineDest
-    } else {
-        Write-Host "Exists, skip: $statuslineDest" -ForegroundColor DarkGray
-    }
+    Sync-File $statuslineSrc $statuslineDest
 
     if (-not (Test-Path $settingsFile)) {
         '{}' | Out-File -FilePath $settingsFile -Encoding utf8
